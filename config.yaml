@@ -1,0 +1,14 @@
+ssh:
+  host: 3.93.68.57
+  port: 22
+  user: ec2-user
+  private_key: /home/quanna/Downloads/gem-x-prod-system-admin.pem
+  
+db:
+  host: image2layout-detection.chm9jqqz3liy.us-east-1.rds.amazonaws.com
+  port: 5432
+  name: 
+  user: postgres
+  password: Uxc6AyhAWe6nHsmv
+
+save_path: result
