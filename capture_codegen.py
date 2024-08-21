@@ -30,17 +30,20 @@ async def trigger_init_builder_event(page, data=[]):
     ''')
 
 async def run(output_codegen, save_codegen_path):
-    browser = await launch()
+    browser = await launch(
+        defaultViewport={
+            'width': 1440,
+            'height':900
+        }
+    )
     page = await browser.newPage()
     await page.goto('https://builder.gempages.net/builder')
-    await page.setViewport({'width': 1920, 'height': 10000})
+    # await page.setViewport({'width': 1920, 'height': 10000})
 
     # Call the triggerInitBuilderEvent function with some data
     await init(page)
-    # json_data = json.loads(output_codegen)
-    # json_str = json.dumps(json_data)
     await trigger_init_builder_event(page, output_codegen)
-    await asyncio.sleep(2)
+    await asyncio.sleep(8)
     # Capture a specific section
     section = await page.querySelector('.ROOT')
     await section.screenshot({'path': save_codegen_path})
