@@ -18,4 +18,4 @@ db_issue:
   password: 1
   db: generate_output_issues
 
-save_path: result_test
+save_path: /home/paul/Projects/image2layout/visualize_i2l/result

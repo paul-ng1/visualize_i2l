@@ -1,14 +1,16 @@
 import logging
 
+from datetime import datetime
+
 from src.database.models import GenerateOutput, Issue, CapturedHistory, GenerateHistory
 from src.database.issues_database import Session as IssueSession
 from src.database.i2l_database import Session as I2LSession
 
 
-def get_capture_history(limit: int = 10):
+def get_capture_history(start_date: datetime, end_date: datetime, page: int=1, limit: int=10):
     try:
         with I2LSession() as session:
-            rows = session.query(CapturedHistory).limit(limit).all()
+            rows = session.query(CapturedHistory).filter(CapturedHistory.created_at.between(start_date, end_date)).limit(limit).all()
         return rows
     except Exception as e:
         logging.error(f"Get Database fail: {e}")
