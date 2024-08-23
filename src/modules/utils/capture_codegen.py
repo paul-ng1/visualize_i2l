@@ -38,7 +38,7 @@ async def run(output_codegen, save_codegen_path):
     )
     page = await browser.newPage()
     
-    await page.goto('https://builder.gempages.net/builder')
+    await page.goto('https://builder.gempages.net/builder?shopToken=cGF1bC1uZy1maXguZ2VtcGFnZXMubGl2ZS1mNGJmYjViYS01NmM1LTQyMDQtOTRkYS0zNjdmZmI1ZWQxOTAtMTcyNDM5MzYzNw&storefrontHandle=paul-ng-fix&moneyFormat=${{amount}}&moneyWithCurrencyFormat=${{amount}}%20USD&pageType=GP_STATIC&editorImageToLayout=true&isThemeSectionEditor=false&isOriginTemplate=false')
     await init(page)
     await trigger_init_builder_event(page, output_codegen)
     await asyncio.sleep(8)
