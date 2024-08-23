@@ -1,12 +1,11 @@
 import os
 from tqdm import tqdm
 
-from read_db import DatabaseConnection , get_capture_history, get_generate_history
-from draw import draw_result
-from capture_codegen import capture
-from utils import load_config
-
-configs = load_config()
+from src.database.i2l_database import DatabaseConnection
+from src.database.crud import get_capture_history, get_generate_history
+from src.modules.utils.draw import draw_result
+from src.modules.utils.capture_codegen import capture
+from src.config import configs
 
 db_connection = DatabaseConnection(configs['ssh']['host'],
                                    configs['ssh']['port'],
