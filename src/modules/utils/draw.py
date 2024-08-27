@@ -29,6 +29,7 @@ def draw_result(page_img_url, section_urls, section_atoms_urls, section_codegen_
         if section_atoms_urls[i] != "":
             section_atoms = Image.open(requests.get(section_atoms_urls[i], stream=True).raw)
             section_codegen = Image.open(section_codegen_urls[i])
+            section_codegen = section_codegen.resize((section_w, section_h))
         else:
             section_atoms = Image.new('RGB', (section_w, section_h), color = (204,255,255))
             section_codegen = Image.new('RGB', (section_w, section_h), color = (204,255,255))
