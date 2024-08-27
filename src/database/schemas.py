@@ -31,6 +31,7 @@ class IssueBase(BaseModel):
     issue_image_url: str
     issue_type: IssueTypeEnum
     note: str | None = None
+    checked: bool=False
 
     class Config:
         from_attributes = True

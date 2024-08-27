@@ -29,7 +29,18 @@ class Issue(IssueBase):
     issue_image_url = Column(String)
     issue_type = Column(Enum('capture', 'section', 'atoms', 'codegen', name='issue_type_enum', create_type=True))
     note = Column(String)
+    checked = Column(Boolean, default=False)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
+
+    def to_dict(self):
+        result = {}
+        for c in self.__table__.columns:
+            value = getattr(self, c.name)
+            if isinstance(value, datetime.datetime):
+                result[c.name] = value.strftime('%Y-%m-%d %H:%M:%S')
+            else:
+                result[c.name] = value
+        return result
 
 
 class GenerateHistory(I2LBase):

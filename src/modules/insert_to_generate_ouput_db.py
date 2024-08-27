@@ -14,8 +14,8 @@ from src.config import configs
 
 models.IssueBase.metadata.create_all(bind=engine)
 
-start_date = datetime(2024, 6, 1)
-end_date = datetime(2024, 7, 1)
+start_date = datetime(2024, 7, 1)
+end_date = datetime(2024, 7, 8)
 
 page = 1
 limit = 100

@@ -1,12 +1,14 @@
-def filter_urls(messages):
+def filter_generate_output(generate_output):
+    dicret = generate_output.__dict__
+    del dicret['_sa_instance_state']
+    dicret['created_at'] = int(dicret['created_at'].timestamp())
+
+    return dicret
+
+
+def filter_generate_outputs(generate_outputs):
     result = []
-    for (message, verified) in messages:
-        dicret = message.__dict__
-        del dicret['_sa_instance_state']
-        del dicret['metadata_']
-        dicret['created_at'] = int(dicret['created_at'].timestamp())
-        dicret['notified_at'] = int(dicret['notified_at'].timestamp())
-        dicret['verified'] = verified
-        result.append(dicret)
+    for generate_output in generate_outputs:
+        result.append(filter_generate_output(generate_output))
 
     return result
