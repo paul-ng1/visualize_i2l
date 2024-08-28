@@ -11,8 +11,9 @@ from src.database.schemas import IssueTypeEnum
 
 def get_capture_history(start_date: datetime, end_date: datetime, page: int=1, limit: int=10):
     try:
+        offset = (page-1)*limit
         with I2LSession() as session:
-            rows = session.query(CapturedHistory).filter(CapturedHistory.created_at.between(start_date, end_date)).limit(limit).all()
+            rows = session.query(CapturedHistory).filter(CapturedHistory.created_at.between(start_date, end_date)).order_by(CapturedHistory.id.asc()).offset(offset).limit(limit).all()
         return rows
     except Exception as e:
         logging.error(f"Get Database fail: {e}")
