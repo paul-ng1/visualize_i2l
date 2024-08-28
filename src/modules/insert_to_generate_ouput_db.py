@@ -1,7 +1,7 @@
 import os
 
 from datetime import datetime
-from tqdm import tqdm
+from tqdm.auto import tqdm
 
 from src.database.crud import get_capture_history, get_generate_history, insert_database
 from src.database.utils import create_generate_output
@@ -14,8 +14,8 @@ from src.config import configs
 
 models.IssueBase.metadata.create_all(bind=engine)
 
-start_date = datetime(2024, 7, 1)
-end_date = datetime(2024, 7, 8)
+start_date = datetime(2024, 8, 9)
+end_date = datetime(2024, 8, 15)
 
 page = 1
 limit = 100
@@ -28,21 +28,29 @@ while True:
         section_urls = capture_history.image_sections_capture
         section_atoms_urls = []
         section_codegen_urls = []
+        generate_ids = []
 
         for i, section_url in tqdm(enumerate(section_urls)):
             generate_history = get_generate_history(section_url)
             if generate_history is None:
                 section_atoms_urls.append("")
                 section_codegen_urls.append("")
+                generate_ids.append("")
                 continue
+            generate_ids.append(str(generate_history.id))
             section_atoms_urls.append(generate_history.detected_url[0])
             output_builder = generate_history.output_builder
             save_codegen_path = os.path.join(capture_save_folder, str(i)+".png")
-            capture(output_builder, save_codegen_path)
+            try:
+                capture(output_builder, save_codegen_path)
+            except Exception as e:
+                print(e)
+                section_codegen_urls.append("")
+                continue
             section_codegen_urls.append(save_codegen_path)
 
         draw_result(capture_history.image_source, capture_history.image_sections_capture, section_atoms_urls,\
-                     section_codegen_urls, capture_history.page_url, capture_save_folder)
+                     section_codegen_urls, generate_ids, capture_history.page_url, capture_save_folder)
         row = create_generate_output(capture_history.id, capture_history.page_url, capture_history.image_source,\
                                     capture_history.image_sections_capture, section_atoms_urls, section_codegen_urls)
         try:
