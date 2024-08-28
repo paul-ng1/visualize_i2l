@@ -1,6 +1,7 @@
 import logging
 
 from datetime import datetime
+from sqlalchemy import exists
 
 from src.database.models import GenerateOutput, Issue, CapturedHistory, GenerateHistory
 from src.database.issues_database import Session as IssueSession
@@ -42,6 +43,17 @@ def insert_database(row: GenerateOutput | Issue):
     except Exception as e:
         session.rollback()
         logging.error(f"Insert Database fail: {e}")
+        return None
+    finally:
+        session.close()
+
+def check_capture_history_existed(capture_history_id: int):
+    try:
+        with IssueSession() as session:
+            exist = session.query(exists().where(GenerateOutput.capture_history_id == capture_history_id)).scalar()
+        return exist
+    except Exception as e:
+        logging.error(f"Get Database fail: {e}")
         return None
     finally:
         session.close()

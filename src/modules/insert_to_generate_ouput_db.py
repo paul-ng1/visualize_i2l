@@ -3,7 +3,7 @@ import os
 from datetime import datetime
 from tqdm.auto import tqdm
 
-from src.database.crud import get_capture_history, get_generate_history, insert_database
+from src.database.crud import get_capture_history, get_generate_history, insert_database, check_capture_history_existed
 from src.database.utils import create_generate_output
 from src.database import models
 from src.database.issues_database import engine
@@ -22,6 +22,9 @@ limit = 100
 while True:
     rows = get_capture_history(start_date, end_date, page, limit)
     for capture_history in tqdm(rows):
+        if check_capture_history_existed(capture_history.id):
+            print(f"{capture_history.id} existed")
+            continue
         capture_save_folder = os.path.join(configs['save_path'], str(capture_history.id))
         if not os.path.exists(capture_save_folder):
             os.makedirs(capture_save_folder)
@@ -35,9 +38,9 @@ while True:
             if generate_history is None:
                 section_atoms_urls.append("")
                 section_codegen_urls.append("")
-                generate_ids.append("")
+                generate_ids.append(0)
                 continue
-            generate_ids.append(str(generate_history.id))
+            generate_ids.append(generate_history.id)
             section_atoms_urls.append(generate_history.detected_url[0])
             output_builder = generate_history.output_builder
             save_codegen_path = os.path.join(capture_save_folder, str(i)+".png")
@@ -52,7 +55,7 @@ while True:
         draw_result(capture_history.image_source, capture_history.image_sections_capture, section_atoms_urls,\
                      section_codegen_urls, generate_ids, capture_history.page_url, capture_save_folder)
         row = create_generate_output(capture_history.id, capture_history.page_url, capture_history.image_source,\
-                                    capture_history.image_sections_capture, section_atoms_urls, section_codegen_urls)
+                                    capture_history.image_sections_capture, section_atoms_urls, section_codegen_urls, generate_ids)
         try:
             insert_database(row)
         except Exception as e:

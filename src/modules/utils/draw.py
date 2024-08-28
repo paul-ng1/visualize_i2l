@@ -40,7 +40,7 @@ def draw_result(page_img_url, section_urls, section_atoms_urls, section_codegen_
 
         font = ImageFont.truetype("DejaVuSans.ttf", 50)
         I = ImageDraw.Draw(img)
-        I.text(offset_generate_id, generate_ids[i],font=font, fill=(255,0,0))
+        I.text(offset_generate_id, str(generate_ids[i]),font=font, fill=(255,0,0))
         img.paste(section_atoms, offset_section_atoms)
         img.paste(section_codegen, offset_codegen)
 

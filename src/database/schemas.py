@@ -10,6 +10,7 @@ class GenerateOutputBase(BaseModel):
     sections_url: list[str]
     atoms_url: list[str] | None = None
     codegens_url: list[str] | None = None
+    generate_histories_id: list[int] | None = None
 
     class Config:
         from_attributes = True

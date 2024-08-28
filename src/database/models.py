@@ -17,6 +17,7 @@ class GenerateOutput(IssueBase):
     sections_url = Column(JSONB, nullable=False)
     atoms_url = Column(JSONB)
     codegens_url = Column(JSONB)
+    generate_histories_id = Column(JSONB)
     checked = Column(Boolean, default=False)
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
 
